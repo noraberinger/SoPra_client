@@ -6,18 +6,7 @@ import {useHistory} from 'react-router-dom';
 import BaseContainer from "components/ui/BaseContainer";
 import PropTypes from "prop-types";
 import "styles/views/Game.scss";
-
-const Player = ({user}) => (
-  <div className="player container">
-    <div className="player username">{user.username}</div>
-    <div className="player name">{user.name}</div>
-    <div className="player id">id: {user.id}</div>
-  </div>
-);
-
-Player.propTypes = {
-  user: PropTypes.object
-};
+import User from 'models/User';
 
 const Game = () => {
   // use react-router-dom's hook to access the history
@@ -30,7 +19,11 @@ const Game = () => {
   // more information can be found under https://reactjs.org/docs/hooks-state.html
   const [users, setUsers] = useState(null);
 
-  const logout = () => {
+  const logout = async () => {
+    console.log(localStorage);
+    //id key can't be updated but username can, hence id key seems to be the safer choice
+    try { const response = await api.put('/users/'+localStorage.getItem('id')+'/logout'); }
+    catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`); }
     localStorage.removeItem('token');
     history.push('/login');
   }
@@ -68,9 +61,32 @@ const Game = () => {
         alert("Something went wrong while fetching the users! See the console for details.");
       }
     }
-
     fetchData();
+
   }, []);
+
+  const Player = ({user}, {on_status=user.logged_in.toString()}) => (
+        <div className="player container">
+            <div className="player id">id: {user.id},</div>
+            <div className="player username">
+                <Button
+                    onClick={() => goProfile(user.id)}
+                >
+                    username: {user.username},
+                </Button>
+            </div>
+            <div className="player creation_date">creation_date: {user.creation_date},</div>
+            <div className="player logged_in">logged_in: {on_status},</div>
+            <div className="player birthday">birthday: {user.birthday?.toString() || 'N/A'}</div>
+        </div>
+  );
+
+  const goProfile =  (id) => { history.push(`/profile/`+id); }
+
+  Player.propTypes = {
+        user: PropTypes.object,
+        on_status: PropTypes.string
+  };
 
   let content = <Spinner/>;
 
@@ -78,9 +94,9 @@ const Game = () => {
     content = (
       <div className="game">
         <ul className="game user-list">
-          {users.map(user => (
-            <Player user={user} key={user.id}/>
-          ))}
+              {users.map(user => (
+                  <Player user={user} key={user.id}/>
+              ))}
         </ul>
         <Button
           width="100%"

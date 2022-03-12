@@ -7,6 +7,11 @@
     /* we include the center mixin defined in _theme.scss and save three duplicate lines :) */
     @include center;
     flex-direction: column;
+    a:link, a:visited, a:hover {
+      color: whitesmoke;
+      font-size: 110%;
+      font-family: monospace;
+    }
   }
   &.form {
     display: flex;
@@ -14,7 +19,7 @@
     justify-content: center;
     width: 60%;
     max-width: 30em;
-    height: 20em;
+    height: 30em;
     font-size: 16px;
     font-weight: 300;
     padding-left: 37px;

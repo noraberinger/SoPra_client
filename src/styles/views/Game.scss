@@ -35,13 +35,20 @@
 .player {
   &.container {
     margin: 0.5em 0;
-    width: 20em;
+    width: 70em;
     padding: 10px;
     border-radius: $borderRadius;
     display: flex;
     align-items: center;
     background: lighten($background, 5);
   }
+
+  &.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+  }
+
   &.name {
     font-weight: 300;
     margin-left: 5px;
