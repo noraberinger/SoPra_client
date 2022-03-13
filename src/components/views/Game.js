@@ -21,10 +21,10 @@ const Game = () => {
 
   const logout = async () => {
     console.log(localStorage);
+    localStorage.removeItem('token');
     //id key can't be updated but username can, hence id key seems to be the safer choice
     try { const response = await api.put('/users/'+localStorage.getItem('id')+'/logout'); }
     catch (error) { alert(`Something went wrong during the logout: \n${handleError(error)}`); }
-    localStorage.removeItem('token');
     history.push('/login');
   }
 
