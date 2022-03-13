@@ -112,7 +112,7 @@ const Game = () => {
     <BaseContainer className="game container">
       <h2>Happy Coding!</h2>
       <p className="game paragraph">
-        Get all users from secure endpoint:
+        Get all users from secure endpoint - users overview:
       </p>
       {content}
     </BaseContainer>
